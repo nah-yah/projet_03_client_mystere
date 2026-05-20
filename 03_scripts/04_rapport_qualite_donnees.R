@@ -20,12 +20,12 @@ sep <- \(n = 40) cat(strrep("-", n), "\n")
 
 log <- capture.output({
   
-  cat(sprintf("BCA Audit Qualité · Rapport QC · %s\n", format(Sys.time(), "%Y-%m-%d %H:%M")))
+  cat(sprintf("BCA Audit Qualité \nRapport QC %s\n", format(Sys.time(), "(%Y-%m-%d %H:%M)")))
   sep(50)
   
   # 1. Volumétrie
   cat("\n1. VOLUMÉTRIE\n"); sep()
-  cat(sprintf("Retenues : %d/120 (%.1f%%) | Agences : %d | Enquêteurs : %d\n",
+  cat(sprintf("Retenues : %d/120 (%.1f%%) \nAgences : %d \nEnquêteurs : %d\n",
               nrow(clean), nrow(clean) / 120 * 100,
               n_distinct(clean$id_agence), n_distinct(clean$id_enqueteur)))
   print(table(clean$code_territoire))
@@ -60,15 +60,15 @@ log <- capture.output({
   
   # 3. Durées déclarées
   cat("\n3. DURÉES DÉCLARÉES\n"); sep()
-  cat(sprintf("  Attente  — min:%d  moy:%.1f  max:%d (min)\n",
+  cat(sprintf("  Attente    min:%d  moy:%.1f  max:%d (min)\n",
               min(clean$m1_duree_attente, na.rm = TRUE),
               mean(clean$m1_duree_attente, na.rm = TRUE),
               max(clean$m1_duree_attente, na.rm = TRUE)))
-  cat(sprintf("  Service  — min:%d  moy:%.1f  max:%d (min)\n",
+  cat(sprintf("  Service    min:%d  moy:%.1f  max:%d (min)\n",
               min(clean$m1_duree_service, na.rm = TRUE),
               mean(clean$m1_duree_service, na.rm = TRUE),
               max(clean$m1_duree_service, na.rm = TRUE)))
-  cat(sprintf("  Totale   — min:%d  moy:%.1f  max:%d (min)\n",
+  cat(sprintf("  Totale     min:%d  moy:%.1f  max:%d (min)\n",
               min(clean$m1_duree_totale, na.rm = TRUE),
               mean(clean$m1_duree_totale, na.rm = TRUE),
               max(clean$m1_duree_totale, na.rm = TRUE)))

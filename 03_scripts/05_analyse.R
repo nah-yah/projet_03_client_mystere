@@ -91,7 +91,7 @@ cor_agents     <- cor(visites$nb_agents_estime, visites$score_composite, use = "
 cor_anciennete <- cor(visites$anciennete_ans,   visites$score_composite, use = "complete.obs")
 
 log <- capture.output({
-  cat(sprintf("BCA Audit Qualité - Analyse %s\n%s\n",
+  cat(sprintf("BCA Audit Qualité \nAnalyse %s\n%s\n",
               format(Sys.time(), "(%Y-%m-%d %H:%M)"), strrep("-", 45)))
   
   cat("\nScore global\n"); sep()

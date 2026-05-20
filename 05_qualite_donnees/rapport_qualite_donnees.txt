@@ -1,9 +1,12 @@
-BCA Audit Qualité · Rapport QC · 2026-05-20 16:21
+BCA Audit Qualité 
+Rapport QC (2026-05-20 18:18)
 -------------------------------------------------- 
 
 1. VOLUMÉTRIE
 ---------------------------------------- 
-Retenues : 120/120 (100.0%) | Agences : 24 | Enquêteurs : 25
+Retenues : 120/120 (100.0%) 
+Agences : 24 
+Enquêteurs : 25
 
 GF GP MQ 
 25 40 55 
@@ -26,9 +29,9 @@ S1 S2 S3 S4 S5
 
 3. DURÉES DÉCLARÉES
 ---------------------------------------- 
-  Attente  — min:0  moy:3.3  max:8 (min)
-  Service  — min:5  moy:17.6  max:32 (min)
-  Totale   — min:1  moy:20.6  max:36 (min)
+  Attente    min:0  moy:3.3  max:8 (min)
+  Service    min:5  moy:17.6  max:32 (min)
+  Totale     min:1  moy:20.6  max:36 (min)
   Durées incohérentes (totale ≠ attente + service) : 2
 
 4. SCORES

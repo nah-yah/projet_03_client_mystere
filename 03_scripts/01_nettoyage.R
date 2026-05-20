@@ -13,7 +13,7 @@ log <- capture.output({
   brut <- read_csv(path_in, show_col_types = FALSE)
   cat(sprintf("Chargé : %d x %d\n", nrow(brut), ncol(brut)))
   
-  # --- Parse geopoints ODK si format string "lat lon alt acc" ---
+  # Parse geopoints ODK si format string "lat lon alt acc"
   # Données réelles ODK → colonnes m1_gps_arrivee / m1_gps_depart (string)
   # Données simulées   → colonnes m1_gps_arr_lat/lon déjà séparées → bloc ignoré
   if ("m1_gps_arrivee" %in% names(brut) && is.character(brut$m1_gps_arrivee)) {
@@ -31,7 +31,7 @@ log <- capture.output({
     cat("GPS geopoints parsés (données ODK)\n")
   }
   
-  # --- Types ---
+  # Types
   brut <- brut |>
     mutate(
       m1_scenario       = factor(m1_scenario,       c("S1","S2","S3","S4","S5")),
@@ -46,7 +46,7 @@ log <- capture.output({
       m1_date_visite    = as.Date(m1_date_visite)
     )
   
-  # --- Plages BARS ---
+  # Plages BARS
   plages <- tribble(
     ~var,                         ~max,
     "m2_01_facade",                3,
@@ -116,12 +116,12 @@ log <- capture.output({
     n <- sum(!is.na(brut[[v]]) & (brut[[v]] < 0 | brut[[v]] > m))
     if (!n) return()
     n_plage <<- n_plage + n
-    cat(sprintf("ALERTE plage : %s [0-%d] — %d cas\n", v, m, n))
+    cat(sprintf("ALERTE plage : %s [0-%d] - %d cas\n", v, m, n))
   })
   cat(if (n_plage == 0) "Plages BARS : OK\n"
       else sprintf("Plages BARS : %d cas\n", n_plage))
   
-  # --- Scores bruts ---
+  # Scores bruts
   scores <- c(m2_score_brut=11, m3_score_brut=14, m4_score_brut=16,
               m6_score_brut=11, m7_score_brut=13)
   n_score <- 0L
@@ -129,16 +129,16 @@ log <- capture.output({
     n <- sum(!is.na(brut[[v]]) & brut[[v]] > m)
     if (!n) return()
     n_score <<- n_score + n
-    cat(sprintf("ALERTE score brut : %s > %d — %d cas\n", v, m, n))
+    cat(sprintf("ALERTE score brut : %s > %d - %d cas\n", v, m, n))
   })
   n_m5 <- sum(!is.na(brut$m5_score_brut) & !is.na(brut$m5_score_max) &
                 brut$m5_score_brut > brut$m5_score_max)
   if (n_m5 > 0)
-    cat(sprintf("ALERTE score brut : m5_score_brut > m5_score_max — %d cas\n", n_m5))
+    cat(sprintf("ALERTE score brut : m5_score_brut > m5_score_max - %d cas\n", n_m5))
   cat(if (n_score + n_m5 == 0) "Scores bruts : OK\n"
       else sprintf("Scores bruts : %d cas\n", n_score + n_m5))
   
-  # --- NA structurels M5 ---
+  # NA structurels M5
   prefixes <- c(S1="m5s1_", S2="m5s2_", S3="m5s3_", S4="m5s4_", S5="m5s5_")
   n_na <- 0L
   for (sc in names(prefixes)) {
@@ -152,8 +152,7 @@ log <- capture.output({
   cat(if (n_na == 0) "NA structurels M5 : OK\n"
       else sprintf("NA structurels M5 : %d cas\n", n_na))
   
-  # --- GPS : recompute m1_gps_valide depuis distances (DEC-16 — géofence 100 m) ---
-  # DEC-16 : 2 lectures (arr + dep) remplacent les 3 lectures antérieures
+  # GPS : recompute m1_gps_valide depuis distances (DEC-16 - géofence 100 m)
   # Valide si arrivée ET départ dans les 100 m du centroïde de l'agence
   brut <- brut |>
     mutate(
@@ -166,8 +165,8 @@ log <- capture.output({
   cat(sprintf("GPS hors géofence 100 m : %d visite(s)\n",
               sum(brut$m1_gps_valide == 0, na.rm = TRUE)))
   
-  # --- Horodatages (DEC-16 : T1 et T4 uniquement) ---
-  # Comparaison string HH:MM:SS — locale-indépendant, même journée
+  # Horodatages (DEC-16 : T1 et T4 uniquement)
+  # Comparaison string HH:MM:SS - locale-indépendant, même journée
   brut <- brut |>
     mutate(
       flag_horaire_incoherent = m1_t1_arrivee >= m1_t4_depart
@@ -175,7 +174,7 @@ log <- capture.output({
   cat(sprintf("Horodatages incohérents (T4 <= T1) : %d\n",
               sum(brut$flag_horaire_incoherent, na.rm = TRUE)))
   
-  # --- Durées déclaratives (DEC-16) ---
+  # Durées déclaratives (DEC-16)
   brut <- brut |>
     mutate(
       flag_duree_incoherente =
@@ -186,7 +185,7 @@ log <- capture.output({
   cat(sprintf("Durées incohérentes : %d\n",
               sum(brut$flag_duree_incoherente, na.rm = TRUE)))
   
-  # --- Cross-validation T1/T4 vs durée déclarée (tolérance 5 min) ---
+  # Cross-validation T1/T4 vs durée déclarée (tolérance 5 min)
   # Détecte les déclarations de durée incompatibles avec l'écart T4-T1 observé
   t1 <- as.POSIXct(brut$m1_t1_arrivee, format = "%H:%M:%S", tz = "UTC")
   t4 <- as.POSIXct(brut$m1_t4_depart,  format = "%H:%M:%S", tz = "UTC")
@@ -200,7 +199,7 @@ log <- capture.output({
   cat(sprintf("Durée déclarée vs écart T1/T4 incohérents (>5 min) : %d\n",
               sum(brut$flag_temps_incoherent, na.rm = TRUE)))
   
-  # --- m8_heure_soumission + m8_delai_soumission (données ODK réelles) ---
+  # m8_heure_soumission + m8_delai_soumission (données ODK réelles)
   # Données simulées : m8_delai_soumission déjà présent en integer → bloc ignoré
   if ("m8_heure_soumission" %in% names(brut) &&
       is.character(brut$m8_heure_soumission)) {
@@ -224,7 +223,7 @@ log <- capture.output({
     cat(sprintf("Soumissions hors délai 30 min : %d\n", n_tard))
   }
   
-  # --- Règles métier ---
+  # Règles métier
   r1 <- brut |>
     group_by(id_agence) |>
     summarise(n = n_distinct(m1_scenario), .groups = "drop") |>
@@ -236,7 +235,7 @@ log <- capture.output({
               if (nrow(r2) == 0) "OK" else paste("FAIL", nrow(r2)),
               if (nrow(r4) == 0) "OK" else paste("FAIL", nrow(r4))))
   
-  # --- Flags qualité ---
+  # Flags qualité
   brut <- brut |>
     mutate(
       flag_qualite_ok =
@@ -254,7 +253,7 @@ log <- capture.output({
       )
     )
   
-  cat(sprintf("flag_qualite_ok : %d/%d | Sortie : %d x %d\n",
+  cat(sprintf("flag_qualite_ok : %d/%d \nSortie : %d x %d\n",
               sum(brut$flag_qualite_ok, na.rm = TRUE), nrow(brut),
               nrow(brut), ncol(brut)))
   print(table(brut$bande_performance))
