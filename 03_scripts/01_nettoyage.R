@@ -2,7 +2,7 @@ library(tidyverse)
 
 path_in  <- "02_donnees/brutes/bca_audit_brut.csv"
 path_out <- "02_donnees/nettoyees/bca_audit_clean.csv"
-path_log <- "05_qualite_donnees/journal_nettoyage.md"
+path_log <- "05_qualite_donnees/journal_nettoyage.txt"
 
 # Distance plane en mètres (précision suffisante <100 km, erreur <0.1 % aux Antilles/Guyane)
 dist_m <- \(lat1, lon1, lat2, lon2)
@@ -10,8 +10,8 @@ sqrt((lat1 - lat2)^2 + ((lon1 - lon2) * cos(lat1 * pi / 180))^2) * 111000
 
 log <- capture.output({
   
-  brut <- read_csv(path_in, show_col_types = FALSE)
-  cat(sprintf("Chargé : %d x %d\n", nrow(brut), ncol(brut)))
+  brut <- read_csv(path_in, show_col_types = FALSE, progress = FALSE)
+  cat(sprintf("\nChargé : %d x %d\n", nrow(brut), ncol(brut)))
   
   # Parse geopoints ODK si format string "lat lon alt acc"
   # Données réelles ODK → colonnes m1_gps_arrivee / m1_gps_depart (string)
@@ -28,7 +28,7 @@ log <- capture.output({
         m1_gps_arr_lat = arr$lat, m1_gps_arr_lon = arr$lon,
         m1_gps_dep_lat = dep$lat, m1_gps_dep_lon = dep$lon
       )
-    cat("GPS geopoints parsés (données ODK)\n")
+    cat("\nGPS geopoints parsés (données ODK)\n")
   }
   
   # Types
@@ -119,7 +119,7 @@ log <- capture.output({
     cat(sprintf("ALERTE plage : %s [0-%d] - %d cas\n", v, m, n))
   })
   cat(if (n_plage == 0) "Plages BARS : OK\n"
-      else sprintf("Plages BARS : %d cas\n", n_plage))
+      else sprintf("\nPlages BARS : %d cas\n", n_plage))
   
   # Scores bruts
   scores <- c(m2_score_brut=11, m3_score_brut=14, m4_score_brut=16,

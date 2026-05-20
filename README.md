@@ -211,5 +211,5 @@ La Vague 2 est prévue pour T4 2025. Les comparaisons longitudinales (Vague 1 vs
 
 ---
 
-*Unité Audit et Qualité de Service - BCA*
+*Unité Audit et Qualité de Service - BCA* 
 *Confidentiel. Usage interne uniquement*

@@ -138,7 +138,6 @@ theme_set(
 
 | Abréviation | Définition |
 |---|---|
-| ACPR | Autorité de Contrôle Prudentiel et de Résolution |
 | BARS | Behaviorally Anchored Rating Scale |
 | BCA | Banque Continentale des Antilles |
 | GF | Guyane française |
@@ -532,9 +531,7 @@ agences |>
 
 ## Références méthodologiques
 
-Mystery Shopping Professionals Association (MSPA). (2023). *MSPA Global Standards for Mystery Shopping Research.* Brussels.
-
-Banque de France / ACPR. (2024). *Recommandations sur la relation client en agence bancaire.* Paris.
+Mystery Shopping Professionals Association (MSPA) Europe/Africa. (2023). *Guidelines for Mystery Shopping (v2)*. MSPA EA.
 
 Wilson, A. M. (2001). Mystery shopping: Using deception to measure service performance. *Psychology & Marketing, 18*(7), 721--734.
 
