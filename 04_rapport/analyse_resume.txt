@@ -1,0 +1,92 @@
+BCA Audit Qualité - Analyse (2026-05-20 18:00)
+---------------------------------------------
+
+Score global
+---------------------------------------- 
+moy=60.0 sd=20.4 min=31.8 max=98.0
+
+ A  B  C  D  F 
+21  7 22 38 32 
+
+Par territoire (ANOVA p=0.4255)
+---------------------------------------- 
+# A tibble: 3 × 5
+  territoire_label code_territoire     n score_moy score_sd
+  <chr>            <chr>           <int>     <dbl>    <dbl>
+1 Martinique       MQ                 55      61.9     19.4
+2 Guadeloupe       GP                 40      60.3     22.4
+3 Guyane française GF                 25      55.4     19.3
+
+Par tier (ANOVA p=0)
+---------------------------------------- 
+# A tibble: 3 × 4
+  tier      n score_moy score_sd
+  <ord> <int>     <dbl>    <dbl>
+1 1        25      93.7      4.1
+2 2        45      60.6      8  
+3 3        50      42.6      7.6
+
+Par scénario (ANOVA p=0.9992)
+---------------------------------------- 
+# A tibble: 5 × 4
+  m1_scenario     n score_moy score_sd
+  <fct>       <int>     <dbl>    <dbl>
+1 S3             24      60.7     20  
+2 S1             24      60.2     21.7
+3 S4             24      60.2     21.2
+4 S5             24      59.9     20.5
+5 S2             24      59       20.4
+
+Par créneau (ANOVA p=0.9933)
+---------------------------------------- 
+# A tibble: 3 × 4
+  creneau_label            n score_moy score_sd
+  <chr>                <int>     <dbl>    <dbl>
+1 Matin (8h-12h)          48      60.3     20.9
+2 Après-midi (14h-17h)    48      59.9     20.2
+3 Midi (12h-14h)          24      59.7     20.8
+
+Par ancienneté
+---------------------------------------- 
+# A tibble: 4 × 5
+  groupe_anciennete_label groupe_anciennete     n score_moy score_sd
+  <chr>                   <chr>             <int>     <dbl>    <dbl>
+1 Historique (≥25 ans)    G1                   30      90.2      8.9
+2 Établie (15-24 ans)     G2                   45      58.5      6.8
+3 Récente (6-14 ans)      G3                   40      42.3      6.6
+4 Très récente (≤5 ans)   G4                    5      33.6      1  
+
+Durées déclarées par scénario (minutes)
+---------------------------------------- 
+# A tibble: 5 × 4
+  m1_scenario moy_attente moy_service moy_totale
+  <fct>             <dbl>       <dbl>      <dbl>
+1 S1                  3.5        26.9       30.4
+2 S2                  2.8        20.8       23.7
+3 S3                  3.4        15.5       17.6
+4 S4                  3.5         9.7       13.2
+5 S5                  3.3        15         18.3
+
+Corrélations
+nb_agents vs score : 0.952
+anciennete vs score : 0.944
+---------------------------------------- 
+
+Top 5 / Bottom 5 agences
+---------------------------------------- 
+# A tibble: 5 × 4
+  id_agence score_moy bande_agence rang_global
+  <chr>         <dbl> <chr>              <dbl>
+1 BCA-MQ-01      96.7 A                      1
+2 BCA-GP-02      95.7 A                      2
+3 BCA-MQ-02      95.4 A                      3
+4 BCA-GP-01      91.6 A                      4
+5 BCA-GF-01      89.2 B                      5
+# A tibble: 5 × 4
+  id_agence score_moy bande_agence rang_global
+  <chr>         <dbl> <chr>              <dbl>
+1 BCA-GF-05      39.1 F                     20
+2 BCA-GF-04      37.4 F                     21
+3 BCA-GP-08      36.1 F                     22
+4 BCA-GP-07      35.4 F                     23
+5 BCA-MQ-11      33.6 F                     24

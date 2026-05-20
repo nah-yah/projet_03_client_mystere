@@ -1,0 +1,19 @@
+type,groupe,n,score_moy,score_sd
+territoire,Martinique,55,61.9,19.4
+territoire,Guadeloupe,40,60.3,22.4
+territoire,Guyane française,25,55.4,19.3
+tier,1,25,93.7,4.1
+tier,2,45,60.6,8
+tier,3,50,42.6,7.6
+scenario,S3,24,60.7,20
+scenario,S1,24,60.2,21.7
+scenario,S4,24,60.2,21.2
+scenario,S5,24,59.9,20.5
+scenario,S2,24,59,20.4
+creneau,Matin (8h-12h),48,60.3,20.9
+creneau,Après-midi (14h-17h),48,59.9,20.2
+creneau,Midi (12h-14h),24,59.7,20.8
+anciennete,Historique (≥25 ans),30,90.2,8.9
+anciennete,Établie (15-24 ans),45,58.5,6.8
+anciennete,Récente (6-14 ans),40,42.3,6.6
+anciennete,Très récente (≤5 ans),5,33.6,1

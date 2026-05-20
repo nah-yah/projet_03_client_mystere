@@ -1,0 +1,26 @@
+id_enqueteur,prenom_anonymise,territoire,code_territoire,genre,tranche_age,age_exact,statut_professionnel,score_certification,visites_assignees,pool_code,actif
+EQ-01,E01,Martinique,MQ,F,31-45,38,Salarie(e),92,4,MQ,True
+EQ-02,E02,Martinique,MQ,M,46-60,52,Salarie(e),88,4,MQ,True
+EQ-03,E03,Martinique,MQ,F,21-30,26,Etudiant(e),95,4,MQ,True
+EQ-04,E04,Martinique,MQ,M,31-45,41,Independant(e),84,4,MQ,True
+EQ-05,E05,Martinique,MQ,F,46-60,55,Salarie(e),90,4,MQ,True
+EQ-06,E06,Martinique,MQ,M,21-30,24,Etudiant(e),87,4,MQ,True
+EQ-07,E07,Martinique,MQ,F,31-45,35,Independant(e),93,3,MQ,True
+EQ-08,E08,Martinique,MQ,M,46-60,58,Salarie(e),88,4,MQ,True
+EQ-09,E09,Martinique,MQ,F,60+,63,Retraite(e),91,3,MQ,True
+EQ-10,E10,Martinique,MQ,M,31-45,44,Salarie(e),89,4,MQ,True
+EQ-11,E11,Martinique,MQ,F,21-30,29,Salarie(e),94,4,MQ,True
+EQ-12,E12,Martinique,MQ,Autre,31-45,37,Salarie(e),85,3,MQ,True
+EQ-13,E13,Martinique,MQ,F,46-60,49,Retraite(e),97,4,MQ,True
+EQ-14,E14,Martinique,MQ,M,60+,67,Retraite(e),82,3,MQ,True
+EQ-15,E15,Martinique,MQ,F,31-45,33,Independant(e),96,3,MQ,True
+EQ-16,E16,Guadeloupe,GP,M,31-45,40,Salarie(e),91,8,GP,True
+EQ-17,E17,Guadeloupe,GP,F,21-30,27,Salarie(e),88,8,GP,True
+EQ-18,E18,Guadeloupe,GP,M,46-60,53,Independant(e),85,8,GP,True
+EQ-19,E19,Guadeloupe,GP,F,31-45,36,Salarie(e),93,8,GP,True
+EQ-20,E20,Guadeloupe,GP,F,60+,62,Retraite(e),90,8,GP,True
+EQ-21,E21,Guyane francaise,GF,M,31-45,42,Salarie(e),87,5,GF,True
+EQ-22,E22,Guyane francaise,GF,F,46-60,51,Salarie(e),94,5,GF,True
+EQ-23,E23,Guyane francaise,GF,M,21-30,25,Etudiant(e),83,5,GF,True
+EQ-24,E24,Guyane francaise,GF,F,31-45,39,Independant(e),92,5,GF,True
+EQ-25,E25,Guyane francaise,GF,M,60+,64,Retraite(e),89,5,GF,True

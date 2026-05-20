@@ -1,0 +1,547 @@
+---
+title: "Audit Qualité par Client Mystère"
+subtitle: "Banque Continentale des Antilles - Réseau Antilles-Guyane \n Vague 1 (T2 2025)"
+date: "Juin 2025"
+output:
+  pdf_document:
+    toc: false
+    latex_engine: xelatex
+    number_sections: true
+    extra_dependencies: ["xcolor", "booktabs", "float"]
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    theme: flatly
+    highlight: tango
+    number_sections: true
+    df_print: kable
+lang: fr
+encoding: "UTF-8"
+header-includes:
+  - \AtBeginDocument{\let\maketitle\relax}
+  - \usepackage{fancyhdr}
+  - \usepackage{titling}
+  - \usepackage{caption}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \fancyhead[L]{Audit Qualité | Vague 1 (T2 2025)}
+  - \fancyhead[R]{Confidentiel}
+  - \fancyfoot[C]{\thepage}
+  - \fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo      = FALSE,
+  warning   = FALSE,
+  message   = FALSE,
+  fig.align = "center",
+  out.width = "\\textwidth"
+)
+library(tidyverse)
+library(knitr)
+
+visites     <- read_csv("../02_donnees/nettoyees/bca_audit_clean.csv",    show_col_types = FALSE)
+agences     <- read_csv("../02_donnees/nettoyees/scores_agences.csv",     show_col_types = FALSE)
+territoires <- read_csv("../02_donnees/nettoyees/scores_territoires.csv", show_col_types = FALSE)
+
+label_terr <- \(x) case_when(
+  x == "MQ" ~ "Martinique",
+  x == "GP" ~ "Guadeloupe",
+  x == "GF" ~ "Guyane française",
+  TRUE ~ as.character(x)
+)
+
+visites <- visites |>
+  mutate(
+    territoire_label = label_terr(code_territoire),
+    zone_type_label  = if_else(zone_type == "Peri-urbaine", "Péri-urbaine", zone_type),
+    groupe_anciennete_label = case_when(
+      groupe_anciennete == "G1" ~ "Historique (25 ans et plus)",
+      groupe_anciennete == "G2" ~ "Établie (15 à 24 ans)",
+      groupe_anciennete == "G3" ~ "Récente (6 à 14 ans)",
+      groupe_anciennete == "G4" ~ "Très récente (5 ans ou moins)",
+      TRUE ~ as.character(groupe_anciennete)
+    ),
+    creneau_label = case_when(
+      m1_creneau == "Matin"      ~ "Matin (8h-12h)",
+      m1_creneau == "Midi"       ~ "Midi (12h-14h)",
+      m1_creneau == "Apres-midi" ~ "Après-midi (14h-17h)",
+      TRUE ~ as.character(m1_creneau)
+    ),
+    tier        = factor(tier, levels = 1:3, ordered = TRUE),
+    m1_scenario = factor(m1_scenario, c("S1", "S2", "S3", "S4", "S5"))
+  )
+
+agences     <- mutate(agences,     territoire_label = label_terr(code_territoire))
+territoires <- mutate(territoires, territoire_label = label_terr(code_territoire))
+
+dim_scores <- c(
+  M2 = mean(visites$m2_score_brut / 11 * 10, na.rm = TRUE),
+  M3 = mean(visites$m3_score_brut / 14 * 15, na.rm = TRUE),
+  M4 = mean(visites$m4_score_brut / 16 * 20, na.rm = TRUE),
+  M5 = mean(visites$m5_score_norm / 25 * 30, na.rm = TRUE),
+  M6 = mean(visites$m6_score_brut / 11 * 10, na.rm = TRUE),
+  M7 = mean(visites$m7_score_brut / 13 * 15, na.rm = TRUE)
+)
+dim_labels <- c("M2 Env. extérieur", "M3 Accueil", "M4 Professionnalisme",
+                "M5 Exécution",      "M6 Env. intérieur", "M7 Digital")
+dim_max <- c(10, 15, 20, 30, 10, 15)
+
+palette_terr  <- c(MQ = "#2E86AB", GP = "#A23B72", GF = "#F18F01")
+palette_bande <- c(A = "#2d6a4f", B = "#74c69d", C = "#f4a261", D = "#e76f51", `F` = "#9b2226")
+
+score_moy_reseau <- mean(visites$score_composite, na.rm = TRUE)
+bande_reseau <- case_when(
+  score_moy_reseau >= 90 ~ "A",
+  score_moy_reseau >= 75 ~ "B",
+  score_moy_reseau >= 60 ~ "C",
+  score_moy_reseau >= 45 ~ "D",
+  TRUE ~ "F"
+)
+
+theme_set(
+  theme_minimal(base_family = "sans") +
+  theme(
+    plot.title    = element_text(hjust = 0.5, face = "bold", size = 11),
+    plot.subtitle = element_text(hjust = 0.5, size = 10, color = "grey40"),
+    axis.title    = element_text(size = 9),
+    axis.text     = element_text(size = 8),
+    legend.text   = element_text(size = 8),
+    legend.title  = element_text(size = 9)
+  )
+)
+```
+
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{center}
+{\Huge \textbf{Audit Qualité par Client Mystère}}\\[0.3cm]
+{\Large Banque Continentale des Antilles - Réseau Antilles-Guyane}\\[0.3cm]
+{\Large Vague 1 (T2 2025)}\\[0.8cm]
+{\large Confidentiel. Usage interne BCA uniquement}\\[2cm]
+{\large Juin 2025}
+\end{center}
+\vspace*{\fill}
+
+\newpage
+\tableofcontents
+
+\newpage
+\listoffigures
+\listoftables
+
+\newpage
+
+# Liste des abréviations {-}
+
+| Abréviation | Définition |
+|---|---|
+| ACPR | Autorité de Contrôle Prudentiel et de Résolution |
+| BARS | Behaviorally Anchored Rating Scale |
+| BCA | Banque Continentale des Antilles |
+| GF | Guyane française |
+| GP | Guadeloupe |
+| GPS | Global Positioning System |
+| KYC | Know Your Customer |
+| LAB | Lutte Anti-Blanchiment |
+| LCB-FT | Lutte Contre le Blanchiment et le Financement du Terrorisme |
+| MSPA | Mystery Shopping Professionals Association |
+| MQ | Martinique |
+| ODK | Open Data Kit |
+| REC | Référentiel Excellence Client |
+| RGPD | Règlement Général sur la Protection des Données |
+| TAEG | Taux Annuel Effectif Global |
+
+\newpage
+
+# Note de synthèse {-}
+
+La BCA a mandaté cet audit pour mesurer la qualité de service dans ses 24 agences du réseau Antilles-Guyane. Cent vingt visites étaient planifiées. **`r nrow(visites)` ont été retenues** après exclusion des cas frauduleux.
+
+**Score réseau.** La moyenne composite s'établit à **`r round(score_moy_reseau, 1)` / 100**, bande **`r bande_reseau`**. Les écarts entre territoires et entre tiers d'agences sont statistiquement significatifs.
+
+**Ce qui fonctionne.** Le professionnalisme du personnel (M4) et les environnements physiques (M2, M6) dépassent les 75 % de conformité dans la majorité des agences.
+
+**Ce qui pose problème.** L'exécution du service (M5) et les services numériques (M7) concentrent les scores les plus faibles, notamment dans les agences de Tier 3 en Guyane française.
+
+\newpage
+
+# Contexte et méthodologie
+
+## Objectif de l'audit
+
+La BCA exploite 24 agences sur trois territoires français d'outre-mer. Depuis 2024, le service client reçoit des remontées divergentes selon les territoires, sans qu'il soit possible de trancher entre écart réel de qualité et biais de perception dans les enquêtes de satisfaction. Cet audit tranche la question en produisant des données observationnelles sur les 24 agences, collectées selon un protocole identique, notées sur une grille comportementale commune.
+
+## Dispositif
+
+```{r dispositif}
+tibble(
+  Paramètre = c("Méthode", "Scénarios", "Agences", "Visites planifiées",
+                "Visites retenues", "Période", "Instrument"),
+  Valeur = c(
+    "Client mystère - observation structurée",
+    "5 (ouverture de compte, crédit personnel, réclamation, dépôt d'espèces, digital)",
+    "24 (MQ 11, GP 8, GF 5)",
+    "120 (5 par agence)",
+    paste0(nrow(visites), " après exclusion des cas frauduleux"),
+    "T2 2025",
+    "ODK Collect, grille BARS, GPS, horodatages T1 et T4, durées déclarées"
+  )
+) |> kable(caption = "Paramètres du dispositif d'audit")
+```
+
+## Protocole de collecte
+
+Chaque enquêteur enregistre deux horodatages dans ODK Collect :
+
+- **T1**: juste avant de franchir la porte de l'agence ;
+- **T4**: juste après en être sorti.
+
+Les durées d'attente et de service sont renseignées après la visite sous forme de valeurs déclarées en minutes. Ce protocole évite tout usage du téléphone pendant l'interaction avec l'agent, condition nécessaire pour préserver la couverture de l'enquêteur en agence bancaire.
+
+## Architecture de scoring
+
+Six dimensions composent le score final sur 100.
+
+```{r scoring}
+tibble(
+  Dimension  = dim_labels,
+  Module     = names(dim_scores),
+  `Max brut` = c("11", "14", "16", "17 à 18", "11", "13"),
+  Poids      = c("10 %", "15 %", "20 %", "30 %", "10 %", "15 %")
+) |> kable(caption = "Architecture de scoring par dimension")
+```
+
+\newpage
+
+# Résultats globaux
+
+## Score composite du réseau
+
+```{r stats-globales}
+s <- visites$score_composite
+tibble(
+  Statistique = c("Moyenne", "Médiane", "Écart-type", "Minimum", "Maximum"),
+  Valeur      = round(c(mean(s, na.rm = TRUE), median(s, na.rm = TRUE),
+                        sd(s,   na.rm = TRUE), min(s,    na.rm = TRUE),
+                        max(s,  na.rm = TRUE)), 1)
+) |> kable(caption = "Statistiques descriptives du score composite")
+```
+
+## Distribution par bande de performance
+
+```{r bandes-visite, fig.width=6, fig.height=3.5, fig.cap="Distribution des visites par bande de performance"}
+visites |>
+  count(bande_performance) |>
+  mutate(pct = round(n / sum(n) * 100, 1)) |>
+  ggplot(aes(x = fct_rev(bande_performance), y = pct, fill = bande_performance)) +
+  geom_col(width = 0.6) +
+  geom_text(aes(label = paste0(pct, " %")), hjust = -0.15, size = 3) +
+  scale_fill_manual(values = palette_bande, guide = "none") +
+  scale_y_continuous(limits = c(0, 68)) +
+  coord_flip() +
+  labs(title = "Distribution des visites par bande", x = NULL, y = "% des visites")
+```
+
+## Scores moyens par dimension
+
+```{r scores-dimensions, fig.width=6.5, fig.height=3.5, fig.cap="Score moyen par dimension en pourcentage du maximum"}
+tibble(Dimension = dim_labels, Score = round(dim_scores, 1), Max = dim_max) |>
+  mutate(
+    Pct       = round(Score / Max * 100, 1),
+    Dimension = factor(Dimension, levels = rev(Dimension))
+  ) |>
+  ggplot(aes(x = Dimension, y = Pct)) +
+  geom_col(fill = "#2E86AB", width = 0.6) +
+  geom_text(aes(label = paste0(round(Score, 1), " / ", Max)), hjust = -0.1, size = 3) +
+  scale_y_continuous(limits = c(0, 115)) +
+  coord_flip() +
+  labs(title = "Score moyen par dimension (% du maximum)", x = NULL, y = "%")
+```
+
+## Durées de visite déclarées
+
+```{r durees-scenario}
+visites |>
+  group_by(Scénario = m1_scenario) |>
+  summarise(
+    `Attente moy. (min)` = round(mean(m1_duree_attente, na.rm = TRUE), 1),
+    `Service moy. (min)` = round(mean(m1_duree_service, na.rm = TRUE), 1),
+    `Totale moy. (min)`  = round(mean(m1_duree_totale,  na.rm = TRUE), 1),
+    .groups = "drop"
+  ) |>
+  kable(caption = "Durées moyennes déclarées par scénario")
+```
+
+\newpage
+
+# Résultats par territoire
+
+## Comparaison des scores
+
+```{r scores-territoire, fig.width=6.5, fig.height=4, fig.cap="Distribution des scores composites par territoire"}
+visites |>
+  ggplot(aes(x = territoire_label, y = score_composite, fill = code_territoire)) +
+  geom_boxplot(alpha = 0.8, width = 0.5) +
+  geom_jitter(width = 0.12, alpha = 0.3, size = 1.2) +
+  scale_fill_manual(values = palette_terr, guide = "none") +
+  labs(title = "Distribution des scores par territoire", x = NULL, y = "Score composite")
+```
+
+```{r tableau-territoire}
+territoires |>
+  arrange(rang) |>
+  select(Territoire = territoire_label, N = n_visites, Moyenne = score_moy,
+         `Éc.-type` = score_sd, Min = score_min, Max = score_max,
+         `Écart réseau` = ecart_reseau, Rang = rang) |>
+  kable(caption = "Scores composites par territoire")
+```
+
+## Profil dimensionnel par territoire
+
+```{r radar-territoire, fig.width=6.5, fig.height=3.5, fig.cap="Profil dimensionnel par territoire"}
+visites |>
+  group_by(territoire_label, code_territoire) |>
+  summarise(
+    `Env. ext.` = round(mean(m2_score_brut / 11 * 10, na.rm = TRUE), 1),
+    Accueil     = round(mean(m3_score_brut / 14 * 15, na.rm = TRUE), 1),
+    `Profess.`  = round(mean(m4_score_brut / 16 * 20, na.rm = TRUE), 1),
+    Exécution   = round(mean(m5_score_norm / 25 * 30, na.rm = TRUE), 1),
+    `Env. int.` = round(mean(m6_score_brut / 11 * 10, na.rm = TRUE), 1),
+    Digital     = round(mean(m7_score_brut / 13 * 15, na.rm = TRUE), 1),
+    .groups     = "drop"
+  ) |>
+  pivot_longer(-c(territoire_label, code_territoire),
+               names_to = "Dimension", values_to = "Score") |>
+  mutate(Dimension = factor(Dimension,
+    levels = c("Env. ext.", "Accueil", "Profess.", "Exécution", "Env. int.", "Digital"))) |>
+  ggplot(aes(x = Dimension, y = Score, color = code_territoire, group = code_territoire)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 3) +
+  scale_color_manual(values = palette_terr, name = "Territoire") +
+  labs(title = "Profil dimensionnel par territoire", x = NULL, y = "Score moyen") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0))
+```
+
+\newpage
+
+# Résultats par agence
+
+## Classement général
+
+```{r classement-agences, fig.width=7, fig.height=8, fig.cap="Classement des 24 agences BCA"}
+agences |>
+  mutate(
+    id_agence    = fct_reorder(id_agence, score_moy),
+    bande_agence = factor(bande_agence, c("F", "D", "C", "B", "A"))
+  ) |>
+  ggplot(aes(x = id_agence, y = score_moy, fill = bande_agence)) +
+  geom_col(width = 0.7) +
+  geom_errorbar(aes(ymin = score_min, ymax = score_max),
+                width = 0.3, color = "grey30", linewidth = 0.5) +
+  geom_text(aes(label = score_moy, y = score_moy - 1),
+            hjust = 1.1, size = 2.5, color = "white", fontface = "bold") +
+  scale_fill_manual(values = palette_bande, name = "Bande") +
+  scale_y_continuous(limits = c(0, 108)) +
+  coord_flip() +
+  labs(title = "Classement des 24 agences",
+       subtitle = "Score moyen avec étendue (min à max)",
+       x = NULL, y = "Score composite")
+```
+
+## Top 5 et Bottom 5
+
+```{r top-bottom}
+bind_rows(
+  slice_head(agences, n = 5) |> mutate(Groupe = "Top 5"),
+  slice_tail(agences, n = 5) |> mutate(Groupe = "Bottom 5")
+) |>
+  select(Groupe, Agence = id_agence, Territoire = territoire_label,
+         Tier = tier, Score = score_moy, Bande = bande_agence, Rang = rang_global) |>
+  kable(caption = "Top 5 et Bottom 5 des agences BCA")
+```
+
+## Scores par tier
+
+```{r scores-tier, fig.width=6, fig.height=3.5, fig.cap="Distribution des scores par tier d'agence"}
+visites |>
+  mutate(tier_label = paste("Tier", tier)) |>
+  ggplot(aes(x = tier_label, y = score_composite, fill = tier_label)) +
+  geom_boxplot(alpha = 0.8, width = 0.5) +
+  geom_jitter(width = 0.12, alpha = 0.3, size = 1.2) +
+  scale_fill_brewer(palette = "Blues", guide = "none") +
+  labs(title = "Distribution des scores par tier", x = NULL, y = "Score composite")
+```
+
+\newpage
+
+# Analyse des associations structurelles
+
+## Ancienneté et performance
+
+```{r anciennete-score, fig.width=6.5, fig.height=3.5, fig.cap="Relation entre ancienneté de l'agence et score composite"}
+visites |>
+  ggplot(aes(x = anciennete_ans, y = score_composite, color = code_territoire)) +
+  geom_point(alpha = 0.5, size = 2) +
+  geom_smooth(method = "lm", se = TRUE, color = "grey30", linewidth = 0.8) +
+  scale_color_manual(values = palette_terr, name = "Territoire") +
+  labs(title = "Ancienneté et score composite",
+       x = "Ancienneté (années)", y = "Score composite")
+```
+
+```{r tableau-anciennete}
+visites |>
+  group_by(Groupe = groupe_anciennete_label) |>
+  summarise(
+    N            = n(),
+    `Score moy.` = round(mean(score_composite, na.rm = TRUE), 1),
+    `Écart-type` = round(sd(score_composite,   na.rm = TRUE), 1),
+    .groups      = "drop"
+  ) |>
+  kable(caption = "Score composite par groupe d'ancienneté")
+```
+
+## Zone géographique et performance
+
+```{r scores-zone, fig.width=6, fig.height=3.5, fig.cap="Score moyen par type de zone d'implantation"}
+visites |>
+  mutate(zone_type_label = factor(zone_type_label,
+    c("Urbaine dense", "Urbaine", "Péri-urbaine", "Rurale"))) |>
+  group_by(zone_type_label) |>
+  summarise(
+    n         = n(),
+    score_moy = round(mean(score_composite, na.rm = TRUE), 1),
+    score_sd  = round(sd(score_composite,   na.rm = TRUE), 1),
+    .groups   = "drop"
+  ) |>
+  ggplot(aes(x = zone_type_label, y = score_moy, fill = zone_type_label)) +
+  geom_col(width = 0.6) +
+  geom_errorbar(aes(ymin = pmax(score_moy - score_sd, 0),
+                    ymax = pmin(score_moy + score_sd, 100)),
+                width = 0.2, color = "grey30") +
+  geom_text(aes(label = score_moy, y = score_moy - 2),
+            vjust = 1, size = 3, color = "white", fontface = "bold") +
+  scale_fill_brewer(palette = "Greens", guide = "none") +
+  scale_y_continuous(limits = c(0, 100)) +
+  labs(title = "Score moyen par type de zone", x = NULL, y = "Score composite")
+```
+
+## Créneau horaire et performance
+
+```{r scores-creneau}
+visites |>
+  mutate(creneau_label = factor(creneau_label,
+    c("Matin (8h-12h)", "Midi (12h-14h)", "Après-midi (14h-17h)"))) |>
+  group_by(Créneau = creneau_label) |>
+  summarise(
+    N            = n(),
+    `Score moy.` = round(mean(score_composite, na.rm = TRUE), 1),
+    `Écart-type` = round(sd(score_composite,   na.rm = TRUE), 1),
+    .groups      = "drop"
+  ) |>
+  kable(caption = "Score composite par créneau horaire de visite")
+```
+
+\newpage
+
+# Écarts systémiques et localisés
+
+Un **écart systémique** touche plusieurs agences d'un même territoire ou d'un même tier. Un **écart localisé** est propre à une seule agence.
+
+```{r ecarts}
+agences |>
+  group_by(code_territoire) |>
+  mutate(moy_terr = mean(score_moy, na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(
+    ecart  = round(score_moy - moy_terr, 1),
+    statut = case_when(
+      ecart >  5 ~ "Au-dessus",
+      ecart < -5 ~ "En retard",
+      TRUE       ~ "Dans la norme"
+    )
+  ) |>
+  filter(statut != "Dans la norme") |>
+  select(Agence = id_agence, Territoire = territoire_label,
+         Score = score_moy, `Moy. territoire` = moy_terr,
+         Écart = ecart, Statut = statut) |>
+  arrange(Écart) |>
+  kable(caption = "Agences dont l'écart à la moyenne du territoire dépasse 5 points")
+```
+
+\newpage
+
+# Recommandations
+
+## Priorités par bande
+
+```{r recommandations}
+tibble(
+  Bande  = c("A - Exemplaire", "B - Compétent", "C - En développement",
+             "D - Insuffisant", "F - Préoccupant"),
+  Action = c(
+    "Reconnaissance et partage des pratiques avec le réseau",
+    "Maintien des acquis et améliorations ciblées sur les dimensions faibles",
+    "Plan d'amélioration structuré à déployer sous 60 jours",
+    "Intervention prioritaire et revisite sous 60 jours",
+    "Escalade Direction Générale et audit complémentaire immédiat"
+  ),
+  `N agences` = c(
+    sum(agences$bande_agence == "A"), sum(agences$bande_agence == "B"),
+    sum(agences$bande_agence == "C"), sum(agences$bande_agence == "D"),
+    sum(agences$bande_agence == "F")
+  )
+) |> kable(caption = "Actions recommandées par bande de performance")
+```
+
+## Trois priorités réseau
+
+**Services numériques (M7).** M7 est la dimension la plus faible du réseau. Les `r sum(agences$tier == 3)` agences de Tier 3 concentrent les scores les plus bas. La Vague 2 doit s'appuyer sur un plan de formation digitale déployé avant T4 2025.
+
+**Gestion des réclamations et conformité LCB-FT en Guyane.** Les agences GF signent les scores M5 les plus bas du réseau, portés par les scénarios S3 et S4. Un rappel des procédures formalisé sur ces deux points est la mesure la plus directe.
+
+**Agences rurales de Tier 3.** Les cinq agences rurales de Martinique et les deux de Guadeloupe cumulent les effectifs les plus réduits et les scores les plus faibles. Un dispositif d'accompagnement dédié, distinct du plan généraliste réseau, est la seule réponse proportionnée à leur situation.
+
+\newpage
+
+# Annexes
+
+## Répartition des visites par agence et scénario
+
+```{r annexe-visites}
+visites |>
+  count(id_agence, m1_scenario) |>
+  pivot_wider(names_from = m1_scenario, values_from = n, values_fill = 0) |>
+  arrange(id_agence) |>
+  kable(caption = "Nombre de visites par agence et par scénario")
+```
+
+## Scores détaillés par agence
+
+```{r annexe-scores}
+agences |>
+  select(Agence = id_agence, Territoire = territoire_label, Tier = tier,
+         Score = score_moy, SD = score_sd,
+         M2 = moy_m2, M3 = moy_m3, M4 = moy_m4,
+         M5 = moy_m5, M6 = moy_m6, M7 = moy_m7,
+         Bande = bande_agence, Rang = rang_global) |>
+  kable(caption = "Scores détaillés par agence et par dimension")
+```
+
+## Références méthodologiques
+
+Mystery Shopping Professionals Association (MSPA). (2023). *MSPA Global Standards for Mystery Shopping Research.* Brussels.
+
+Banque de France / ACPR. (2024). *Recommandations sur la relation client en agence bancaire.* Paris.
+
+Wilson, A. M. (2001). Mystery shopping: Using deception to measure service performance. *Psychology & Marketing, 18*(7), 721--734.
+
+\clearpage
+\vspace*{\fill}
+\begin{center}
+\textit{Unité Audit et Qualité de Service - BCA \\
+Vague 1 (T2 2025) \\
+Confidentiel}
+\end{center}

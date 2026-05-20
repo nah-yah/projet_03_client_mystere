@@ -1,0 +1,152 @@
+---
+params:
+  agence_id: "BCA-MQ-01"
+title: "`r paste('Scorecard -', params$agence_id)`"
+subtitle: "Audit Qualité | Vague 1 - T2 2025"
+date: "Juin 2026"
+output:
+  pdf_document:
+    latex_engine: xelatex
+geometry: margin=1.8cm
+header-includes:
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \fancyhead[L]{BCA Scorecard - Vague 1}
+  - \fancyhead[R]{Confidentiel}
+  - \fancyfoot[C]{\thepage}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE,
+                      fig.width=6.5, fig.height=3, fig.align="center", fig.path = "./fig_temp/")
+library(tidyverse)
+
+visites_all <- read_csv("../../02_donnees/nettoyees/bca_audit_clean.csv",
+                        show_col_types = FALSE)
+agences_all <- read_csv("../../02_donnees/nettoyees/scores_agences.csv",
+                        show_col_types = FALSE)
+
+ag_id <- params$agence_id
+
+ag_info <- agences_all |>
+  filter(id_agence == ag_id) |>
+  mutate(territoire_label = case_when(
+    code_territoire == "MQ" ~ "Martinique",
+    code_territoire == "GP" ~ "Guadeloupe",
+    code_territoire == "GF" ~ "Guyane française"
+  ))
+
+ag_visites  <- filter(visites_all, id_agence == ag_id)
+reseau_moy  <- mean(visites_all$score_composite)
+
+palette_bande <- c(A="#2d6a4f", B="#74c69d", C="#f4a261", D="#e76f51", F="#9b2226")
+label_bande   <- c(A="A - Exemplaire", B="B - Compétent", C="C - En développement",
+                   D="D - Insuffisant", `F`="F - Préoccupant")
+```
+
+# `r ag_info$territoire_label` - Tier `r ag_info$tier`
+
+**Score composite : `r ag_info$score_moy` / 100** · Bande **`r label_bande[ag_info$bande_agence]`** · Rang `r ag_info$rang_global` / `r nrow(agences_all)`
+
+**Écart réseau :** `r ifelse(ag_info$ecart_reseau >= 0, paste0("+", ag_info$ecart_reseau), ag_info$ecart_reseau)` pts · **Rang territoire :** `r ag_info$rang_territoire` / `r sum(agences_all$code_territoire == ag_info$code_territoire)`
+
+---
+
+## Profil dimensionnel
+
+```{r profil}
+tibble(
+  Dimension = c("M2 Env. ext.","M3 Accueil","M4 Profess.",
+                "M5 Exécution","M6 Env. int.","M7 Digital"),
+  Score  = c(ag_info$moy_m2, ag_info$moy_m3, ag_info$moy_m4,
+             ag_info$moy_m5, ag_info$moy_m6, ag_info$moy_m7),
+  Max    = c(10, 15, 20, 30, 10, 15),
+  Reseau = c(mean(agences_all$moy_m2), mean(agences_all$moy_m3),
+             mean(agences_all$moy_m4), mean(agences_all$moy_m5),
+             mean(agences_all$moy_m6), mean(agences_all$moy_m7))
+) |>
+  mutate(Pct = Score / Max * 100, Pct_r = Reseau / Max * 100,
+         Dimension = fct_reorder(Dimension, Pct)) |>
+  ggplot(aes(x = Dimension, y = Pct)) +
+  geom_col(fill = palette_bande[ag_info$bande_agence], width = 0.5, alpha = 0.85) +
+  geom_point(aes(y = Pct_r), shape = 18, size = 4, color = "grey30") +
+  geom_text(aes(label = paste0(round(Score,1), " / ", Max)), hjust = -0.1, size = 3) +
+  scale_y_continuous(limits = c(0, 115)) +
+  coord_flip() +
+  labs(title = "Score par dimension (barres) vs moyenne réseau (losanges)",
+       x = NULL, y = "% du maximum") +
+  theme_minimal()
+```
+
+## Détail des visites
+
+```{r visites, fig.height=2.5}
+ag_visites |>
+  mutate(
+    m1_scenario = factor(m1_scenario, c("S1","S2","S3","S4","S5")),
+    bande = factor(case_when(score_composite>=90~"A", score_composite>=75~"B",
+                             score_composite>=60~"C", score_composite>=45~"D",
+                             TRUE~"F"), c("F","D","C","B","A"))
+  ) |>
+  ggplot(aes(x = m1_scenario, y = score_composite, fill = bande)) +
+  geom_col(width = 0.6) +
+  geom_hline(yintercept = reseau_moy, linetype = "dashed", color = "grey40") +
+  geom_text(aes(label = round(score_composite, 1)), vjust = -0.4, size = 3.5) +
+  annotate("text", x = 5.3, y = reseau_moy + 2,
+           label = paste0("Réseau: ", round(reseau_moy, 1)), size = 2.8, color = "grey40") +
+  scale_fill_manual(values = palette_bande, guide = "none") +
+  scale_y_continuous(limits = c(0, 105)) +
+  labs(title = "Score par scénario", x = "Scénario", y = "Score composite") +
+  theme_minimal()
+```
+
+## Conformité et temps de service
+
+```{r conformite-temps, fig.height=2.2}
+p1 <- tibble(
+  Dimension = c("M3 Accueil","M4 Profess.","M5 Exécution"),
+  Taux = c(ag_info$taux_conforme_m3, ag_info$taux_conforme_m4, ag_info$taux_conforme_m5)
+) |>
+  mutate(Dimension = fct_reorder(Dimension, Taux),
+         couleur = if_else(Taux >= 75, "#2d6a4f", "#e76f51")) |>
+  ggplot(aes(x = Dimension, y = Taux, fill = couleur)) +
+  geom_col(width = 0.5) +
+  geom_text(aes(label = paste0(Taux, " %")), hjust = -0.2, size = 3.5) +
+  scale_fill_identity() +
+  scale_y_continuous(limits = c(0, 115)) +
+  coord_flip() +
+  labs(title = "Conformité (seuil 75 %)", x = NULL, y = "%") +
+  theme_minimal()
+
+p2 <- ag_visites |>
+  select(m1_scenario, m1_duree_attente, m1_duree_service) |>
+  pivot_longer(-m1_scenario, names_to = "Phase", values_to = "Minutes") |>
+  mutate(Phase = if_else(Phase == "m1_duree_attente", "Attente", "Service")) |>
+  ggplot(aes(x = m1_scenario, y = Minutes, fill = Phase)) +
+  geom_col(position = "stack", width = 0.5) +
+  scale_fill_manual(values = c(Attente="#e76f51", Service="#457b9d")) +
+  labs(title = "Durée des visites (min)", x = "Scénario", y = "Minutes") +
+  theme_minimal()
+
+gridExtra::grid.arrange(p1, p2, ncol = 2)
+```
+
+---
+
+```{r action, include=FALSE}
+action <- case_when(
+  ag_info$bande_agence == "A" ~ "Reconnaissance et partage des pratiques avec le réseau.",
+  ag_info$bande_agence == "B" ~ "Maintien des acquis. Améliorations ciblées sur les dimensions faibles.",
+  ag_info$bande_agence == "C" ~ "Plan d'amélioration structuré à mettre en place sous 60 jours.",
+  ag_info$bande_agence == "D" ~ "INTERVENTION PRIORITAIRE. Revisite sous 60 jours.",
+  ag_info$bande_agence == "F" ~ "ESCALADE DIRECTION GÉNÉRALE. Audit complémentaire immédiat."
+)
+```
+
+**Action recommandée :** `r action`
+
+\vspace*{\fill}
+\begin{center}
+\textit{Confidentiel. Usage interne BCA uniquement}
+\end{center}

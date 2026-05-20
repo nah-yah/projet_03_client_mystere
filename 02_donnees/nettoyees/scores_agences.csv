@@ -1,0 +1,25 @@
+id_agence,code_territoire,territoire,tier,groupe_anciennete,anciennete_ans,zone_type,nb_agents_estime,n_visites,score_moy,score_sd,score_min,score_max,moy_m2,moy_m3,moy_m4,moy_m5,moy_m6,moy_m7,taux_conforme_m3,taux_conforme_m4,taux_conforme_m5,rang_global,bande_agence,ecart_reseau,rang_territoire
+BCA-MQ-01,MQ,Martinique,1,G1,36,Urbaine dense,15,5,96.7,0.5,96,97.3,9.8,14.1,19.8,29.3,9.8,13.8,100,100,100,1,A,36.7,1
+BCA-GP-02,GP,Guadeloupe,1,G1,28,Urbaine dense,11,5,95.7,1.2,94,96.8,9.5,14.4,19,28.6,10,14.3,100,100,100,2,A,35.7,1
+BCA-MQ-02,MQ,Martinique,1,G1,31,Urbaine dense,12,5,95.4,1.6,94,98,9.3,14.1,19.5,28.9,9.5,14.1,100,100,100,3,A,35.4,2
+BCA-GP-01,GP,Guadeloupe,1,G1,33,Urbaine dense,14,5,91.6,4.4,85.2,97.1,9.5,13.9,18.2,26.9,9.6,13.4,100,100,100,4,A,31.6,2
+BCA-GF-01,GF,Guyane francaise,1,G1,29,Urbaine dense,12,5,89.2,5.3,81.3,93.2,9.5,12.4,18.2,26.6,8.4,14.1,60,100,100,5,B,29.2,1
+BCA-MQ-03,MQ,Martinique,2,G1,26,Urbaine,8,5,72.9,5.1,65.2,78.2,7.1,10.9,14.8,20.7,7.6,11.8,40,80,20,6,C,12.9,3
+BCA-GP-03,GP,Guadeloupe,2,G2,23,Urbaine,7,5,69.3,3.5,66.3,75.1,6.9,10.5,14.2,20.7,6.7,10.2,20,60,40,7,C,9.3,3
+BCA-MQ-04,MQ,Martinique,2,G2,22,Peri-urbaine,7,5,64.4,2.1,62.2,67.6,6.4,10.1,11.5,19.7,6.5,10.2,20,0,20,8,C,4.4,4
+BCA-MQ-05,MQ,Martinique,2,G2,20,Peri-urbaine,6,5,63.5,1.6,61.4,65.3,6,9.9,12,19.7,6.7,9.2,20,0,20,9,C,3.5,5
+BCA-GP-04,GP,Guadeloupe,2,G2,21,Urbaine,7,5,59.3,3.5,55.9,64.8,5.8,8.6,12,17.6,5.6,9.7,0,0,0,10,D,-0.7,4
+BCA-GF-03,GF,Guyane francaise,2,G2,16,Urbaine,5,5,58.4,2,56.2,61.8,6.2,9.6,11.5,16.6,6,8.5,0,0,0,11,D,-1.6,2
+BCA-MQ-06,MQ,Martinique,2,G2,18,Peri-urbaine,6,5,57.1,2.1,55.2,60.6,5.3,9,11.8,16.6,5.3,9.2,0,0,0,12,D,-2.9,6
+BCA-MQ-07,MQ,Martinique,3,G2,15,Peri-urbaine,4,5,54.5,4.2,50.5,61.4,4.7,8.8,10.8,16.8,5.3,8.1,0,0,0,13,D,-5.5,7
+BCA-GF-02,GF,Guyane francaise,2,G2,22,Urbaine,6,5,53.1,2.1,51.2,56.5,5.1,8.6,10.2,16.3,5.1,7.8,0,0,0,14,D,-6.9,3
+BCA-MQ-09,MQ,Martinique,3,G3,11,Rurale,3,5,51.7,2.6,48.3,55.1,5.1,7.9,10.5,15.5,5.3,7.4,0,0,0,15,D,-8.3,8
+BCA-MQ-08,MQ,Martinique,3,G3,13,Rurale,3,5,49.6,1.3,48.6,51.2,5.1,7.3,9.5,14.2,5.3,8.3,0,0,0,16,D,-10.4,9
+BCA-GP-06,GP,Guadeloupe,3,G3,14,Peri-urbaine,4,5,47.7,2.2,44.7,50.8,4.5,6.6,9.8,14.8,4.7,7.2,0,0,0,17,D,-12.3,5
+BCA-GP-05,GP,Guadeloupe,2,G2,17,Peri-urbaine,5,5,47.4,3.4,44.3,53.2,4.4,6.9,9,14.4,5.1,7.6,0,0,0,18,D,-12.6,6
+BCA-MQ-10,MQ,Martinique,3,G3,8,Rurale,3,5,41.3,1.6,39.2,43.3,4.7,6.6,8.5,12,3.6,5.8,0,0,0,19,F,-18.7,10
+BCA-GF-05,GF,Guyane francaise,3,G3,7,Peri-urbaine,2,5,39.1,2.5,36.3,41.6,4,6,7.2,11.8,3.8,6.2,0,0,0,20,F,-20.9,4
+BCA-GF-04,GF,Guyane francaise,3,G3,11,Peri-urbaine,3,5,37.4,4.7,31.8,44.6,3.5,5.6,9,10.7,2.9,5.8,0,0,0,21,F,-22.6,5
+BCA-GP-08,GP,Guadeloupe,3,G3,6,Rurale,2,5,36.1,1.4,34.4,38.1,4,4.5,7.8,10.7,2.9,6.2,0,0,0,22,F,-23.9,7
+BCA-GP-07,GP,Guadeloupe,3,G3,10,Rurale,3,5,35.4,3.1,32.3,39.9,3.5,4.5,7.2,10.7,4.2,5.3,0,0,0,23,F,-24.6,8
+BCA-MQ-11,MQ,Martinique,3,G4,5,Rurale,2,5,33.6,1,32.8,35.3,3.8,5.1,6.5,10,3.1,5.1,0,0,0,24,F,-26.4,11

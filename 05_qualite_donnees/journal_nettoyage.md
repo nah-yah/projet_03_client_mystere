@@ -1,0 +1,16 @@
+[1mindexing[0m [34mbca_audit_brut.csv[0m [=======----------------] [32m3.30MB/s[0m, eta: [36m 0s[0m[1mindexing[0m [34mbca_audit_brut.csv[0m [=======================] [32m4.46MB/s[0m, eta: [36m 0s[0m                                                                                                           Chargé : 120 x 115
+Plages BARS : OK
+Scores bruts : OK
+NA structurels M5 : OK
+GPS hors géofence 100 m : 2 visite(s)
+Horodatages incohérents (T4 <= T1) : 0
+Durées incohérentes : 2
+Durée déclarée vs écart T1/T4 incohérents (>5 min) : 2
+R1:OK R2:OK R4:OK
+flag_qualite_ok : 116/120 | Sortie : 120 x 120
+
+ F  D  C  B  A 
+32 38 22  7 21 
+
+MQ GP GF 
+55 40 25 

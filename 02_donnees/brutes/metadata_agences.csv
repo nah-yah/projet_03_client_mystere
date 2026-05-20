@@ -1,0 +1,25 @@
+id_agence,nom_agence,territoire,code_territoire,ville,tier,annee_ouverture,anciennete_ans,groupe_anciennete,label_anciennete,agence_fondatrice,visites_vague1,latitude,longitude,rayon_geofence_m,nb_agents_estime,zone_type
+BCA-MQ-01,Fort-de-France Centre,Martinique,MQ,Fort-de-France,1,1989,36,G1,Historique,True,5,14.6037,-61.0588,50,15,Urbaine dense
+BCA-MQ-02,Le Lamentin,Martinique,MQ,Le Lamentin,1,1994,31,G1,Historique,False,5,14.6115,-60.9998,50,12,Urbaine dense
+BCA-MQ-03,Schoelcher,Martinique,MQ,Schoelcher,2,1999,26,G1,Historique,False,5,14.6241,-61.0891,50,8,Urbaine
+BCA-MQ-04,Le Robert,Martinique,MQ,Le Robert,2,2003,22,G2,Etablie,False,5,14.6802,-60.933,50,7,Peri-urbaine
+BCA-MQ-05,Sainte-Marie,Martinique,MQ,Sainte-Marie,2,2005,20,G2,Etablie,False,5,14.7793,-60.9913,50,6,Peri-urbaine
+BCA-MQ-06,La Trinite,Martinique,MQ,La Trinite,2,2007,18,G2,Etablie,False,5,14.7378,-60.964,50,6,Peri-urbaine
+BCA-MQ-07,Le Francois,Martinique,MQ,Le Francois,3,2010,15,G2,Etablie,False,5,14.6196,-60.8994,50,4,Peri-urbaine
+BCA-MQ-08,Riviere-Pilote,Martinique,MQ,Riviere-Pilote,3,2012,13,G3,Recente,False,5,14.4797,-60.8889,50,3,Rurale
+BCA-MQ-09,Le Marin,Martinique,MQ,Le Marin,3,2014,11,G3,Recente,False,5,14.4697,-60.875,50,3,Rurale
+BCA-MQ-10,Saint-Pierre,Martinique,MQ,Saint-Pierre,3,2017,8,G3,Recente,False,5,14.7383,-61.1783,50,3,Rurale
+BCA-MQ-11,Le Vauclin,Martinique,MQ,Le Vauclin,3,2020,5,G4,Tres recente,False,5,14.5536,-60.8389,50,2,Rurale
+BCA-GP-01,Pointe-a-Pitre Centre,Guadeloupe,GP,Pointe-a-Pitre,1,1992,33,G1,Historique,True,5,16.2418,-61.5336,50,14,Urbaine dense
+BCA-GP-02,Baie-Mahault,Guadeloupe,GP,Baie-Mahault,1,1997,28,G1,Historique,False,5,16.2697,-61.5875,50,11,Urbaine dense
+BCA-GP-03,Les Abymes,Guadeloupe,GP,Les Abymes,2,2002,23,G2,Etablie,False,5,16.2638,-61.5047,50,7,Urbaine
+BCA-GP-04,Basse-Terre,Guadeloupe,GP,Basse-Terre,2,2004,21,G2,Etablie,False,5,15.9985,-61.7242,50,7,Urbaine
+BCA-GP-05,Sainte-Anne,Guadeloupe,GP,Sainte-Anne,2,2008,17,G2,Etablie,False,5,16.2229,-61.3839,50,5,Peri-urbaine
+BCA-GP-06,Saint-Francois,Guadeloupe,GP,Saint-Francois,3,2011,14,G3,Recente,False,5,16.2536,-61.2783,50,4,Peri-urbaine
+BCA-GP-07,Capesterre-Belle-Eau,Guadeloupe,GP,Capesterre-Belle-Eau,3,2015,10,G3,Recente,False,5,16.0444,-61.5633,50,3,Rurale
+BCA-GP-08,Le Moule,Guadeloupe,GP,Le Moule,3,2019,6,G3,Recente,False,5,16.3308,-61.3522,50,2,Rurale
+BCA-GF-01,Cayenne Centre,Guyane francaise,GF,Cayenne,1,1996,29,G1,Historique,True,5,4.9224,-52.3135,50,12,Urbaine dense
+BCA-GF-02,Kourou,Guyane francaise,GF,Kourou,2,2003,22,G2,Etablie,False,5,5.1604,-52.6477,50,6,Urbaine
+BCA-GF-03,Saint-Laurent-du-Maroni,Guyane francaise,GF,Saint-Laurent-du-Maroni,2,2009,16,G2,Etablie,False,5,5.4989,-54.0328,50,5,Urbaine
+BCA-GF-04,Matoury,Guyane francaise,GF,Matoury,3,2014,11,G3,Recente,False,5,4.849,-52.328,50,3,Peri-urbaine
+BCA-GF-05,Remire-Montjoly,Guyane francaise,GF,Remire-Montjoly,3,2018,7,G3,Recente,False,5,4.9331,-52.2706,50,2,Peri-urbaine

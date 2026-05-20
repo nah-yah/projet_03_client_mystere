@@ -1,0 +1,84 @@
+BCA Audit Qualité · Rapport QC · 2026-05-20 16:21
+-------------------------------------------------- 
+
+1. VOLUMÉTRIE
+---------------------------------------- 
+Retenues : 120/120 (100.0%) | Agences : 24 | Enquêteurs : 25
+
+GF GP MQ 
+25 40 55 
+
+S1 S2 S3 S4 S5 
+24 24 24 24 24 
+
+2. COMPLÉTUDE
+---------------------------------------- 
+  M2 : 100.0%
+  M3 : 100.0%
+  M4 : 100.0%
+  M6 : 100.0%
+  M7 : 100.0%
+  M5-S1 : 24/24
+  M5-S2 : 24/24
+  M5-S3 : 24/24
+  M5-S4 : 24/24
+  M5-S5 : 24/24
+
+3. DURÉES DÉCLARÉES
+---------------------------------------- 
+  Attente  — min:0  moy:3.3  max:8 (min)
+  Service  — min:5  moy:17.6  max:32 (min)
+  Totale   — min:1  moy:20.6  max:36 (min)
+  Durées incohérentes (totale ≠ attente + service) : 2
+
+4. SCORES
+---------------------------------------- 
+min=31.8 Q1=44.6 med=55.9 moy=60.0 Q3=70.3 max=98.0 sd=20.4
+
+ A  B  C  D  F 
+21  7 22 38 32 
+
+Dimensions :
+  M2 : 6.0/10 (60%)
+  M3 : 9.0/15 (60%)
+  M4 : 12.0/20 (60%)
+  M5 : 17.9/30 (60%)
+  M6 : 6.0/10 (60%)
+  M7 : 9.1/15 (61%)
+
+5. PAR TERRITOIRE
+---------------------------------------- 
+# A tibble: 3 × 7
+  code_territoire territoire       n_visites score_moy score_sd  rang
+  <chr>           <chr>                <dbl>     <dbl>    <dbl> <dbl>
+1 MQ              Martinique              55      61.9     19.4     1
+2 GP              Guadeloupe              40      60.3     22.4     2
+3 GF              Guyane francaise        25      55.4     19.3     3
+# ℹ 1 more variable: ecart_reseau <dbl>
+
+6. ALERTES
+---------------------------------------- 
+Agences D/F :
+# A tibble: 15 × 3
+   id_agence score_moy bande_agence
+   <chr>         <dbl> <chr>       
+ 1 BCA-GP-04      59.3 D           
+ 2 BCA-GF-03      58.4 D           
+ 3 BCA-MQ-06      57.1 D           
+ 4 BCA-MQ-07      54.5 D           
+ 5 BCA-GF-02      53.1 D           
+ 6 BCA-MQ-09      51.7 D           
+ 7 BCA-MQ-08      49.6 D           
+ 8 BCA-GP-06      47.7 D           
+ 9 BCA-GP-05      47.4 D           
+10 BCA-MQ-10      41.3 F           
+11 BCA-GF-05      39.1 F           
+12 BCA-GF-04      37.4 F           
+13 BCA-GP-08      36.1 F           
+14 BCA-GP-07      35.4 F           
+15 BCA-MQ-11      33.6 F           
+Dimension la plus faible : M6 (60%)
+
+7. CONTRÔLES
+---------------------------------------- 
+R1:OK R2:OK R3:OK R4:OK
