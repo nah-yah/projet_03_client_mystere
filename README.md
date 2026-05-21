@@ -9,6 +9,14 @@ La BCA a mandaté cet audit pour mesurer la qualité de service dans ses 24 agen
 
 ---
 
+## Questionnaire de collecte
+
+Prévisualiser le formulaire ONA déployé pour les enquêteurs :
+
+**[Ouvrir le questionnaire](https://enketo.ona.io/preview/Dnxn4BBg)**
+
+---
+
 ## Chaîne de données
 
 ```
@@ -108,6 +116,7 @@ Les scripts s'exécutent dans l'ordre 00 à 05. Chaque script écrit ses sorties
 | Note méthodologique | `00_methodologie/note_methodologique.md` | Markdown |
 | Blueprint questionnaire | `00_methodologie/blueprint_questionnaire.md` | Markdown |
 | Cadre d'échantillonnage | `00_methodologie/cadre_echantillonnage.md` | Markdown |
+| Questionnaire ONA (preview) | [Ouvrir sur ONA](https://enketo.ona.io/preview/Dnxn4BBg) | Enketo / ONA |
 | XLSForm ODK | `01_instrument/BCA_audit_qualite_v1.xlsx` | XLSForm |
 | Guide enquêteur | `01_instrument/guide_enqueteur.md` | Markdown |
 | Données brutes simulées | `02_donnees/brutes/bca_audit_brut.csv` | CSV |
